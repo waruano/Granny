@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Información Producto
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form id="add-product-form1">
+    <ion-item id="add-product-input3">
+      <ion-label>
+        Nombre Producto
+      </ion-label>
+      <ion-input type="text" placeholder=""></ion-input>
+    </ion-item>
+    <ion-item id="add-product-input4">
+      <ion-label>
+        Precio
+      </ion-label>
+      <ion-input type="number" placeholder=""></ion-input>
+    </ion-item>
+    <ion-item id="add-product-input2">
+      <ion-label>
+        Punto de venta
+      </ion-label>
+      <ion-input type="text" placeholder=""></ion-input>
+    </ion-item>
+  </form>
+  <button id="add-product-button9" ion-button color="positive" block (click)="addProduct()">
+    <ion-icon name="add"></ion-icon>
+    Agregar
+  </button>
+</ion-content>

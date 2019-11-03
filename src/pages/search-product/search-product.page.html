@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Buscar Producto
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <form id="buscarProducto-form2">
+        <ion-item id="buscarProducto-input6">
+          <ion-label>
+            Buscar por:
+          </ion-label>
+          <ion-input type="text" placeholder=""></ion-input>
+        </ion-item>
+        <ion-item id="buscarProducto-checkbox1">
+          <ion-label>
+            Nombre del producto
+          </ion-label>
+          <ion-checkbox></ion-checkbox>
+        </ion-item>
+        <ion-item id="buscarProducto-checkbox2">
+          <ion-label>
+            Código de barras
+          </ion-label>
+          <ion-checkbox></ion-checkbox>
+        </ion-item>
+        <ion-item id="buscarProducto-checkbox3">
+          <ion-label>
+            Establecimiento comercial
+          </ion-label>
+          <ion-checkbox></ion-checkbox>
+        </ion-item>
+        <ion-item id="buscarProducto-input7">
+          <ion-label>
+            Ingrese el nombre del producto
+          </ion-label>
+          <ion-input type="text" placeholder=""></ion-input>
+        </ion-item>
+        <button id="buscarProducto-button11" ion-button color="positive" block>
+          Escanear código de barras
+        </button>
+        <ion-item id="buscarProducto-select1">
+          <ion-label>
+            Seleccione su ubicación
+          </ion-label>
+          <ion-select name=""></ion-select>
+        </ion-item>
+      </form>
+      <button id="buscarProducto-button10" ion-button color="positive" block on-click="goToSearchResults()">
+        <ion-icon name="search"></ion-icon>
+        Buscar
+      </button>
+</ion-content>
