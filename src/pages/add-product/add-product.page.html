@@ -10,28 +10,37 @@
 </ion-header>
 
 <ion-content>
-  <form id="add-product-form1">
+  <form id="add-product-form1" #form="ngForm">
     <ion-item id="add-product-input3">
-      <ion-label>
+      <ion-label position="floating">
+        Código de barras
+      </ion-label>
+      <ion-input type="text" placeholder="" [(ngModel)]="barcodeData.text" name="text" disabled></ion-input>
+    </ion-item>
+    <ion-item id="add-product-input3">
+      <ion-label position="floating">
         Nombre Producto
       </ion-label>
-      <ion-input type="text" placeholder=""></ion-input>
+      <ion-input type="text" placeholder="" [(ngModel)]="product.name" name="product-name"></ion-input>
     </ion-item>
     <ion-item id="add-product-input4">
-      <ion-label>
+      <ion-label position="floating">
         Precio
       </ion-label>
-      <ion-input type="number" placeholder=""></ion-input>
+      <ion-input type="number" placeholder="Ingrese el precio" [(ngModel)]="product.price" name="product-price">
+      </ion-input>
     </ion-item>
-    <ion-item id="add-product-input2">
-      <ion-label>
-        Punto de venta
-      </ion-label>
-      <ion-input type="text" placeholder=""></ion-input>
-    </ion-item>
+    <place-finder [position]="position"></place-finder>
   </form>
-  <button id="add-product-button9" ion-button color="positive" block (click)="addProduct()">
-    <ion-icon name="add"></ion-icon>
-    Agregar
-  </button>
+  <ion-grid style="margin-top:30vh">
+    <ion-row>
+      <ion-col style="text-align: center;">
+        <ion-button id="add-product-button9" color="primary" (click)="addProduct()">
+          <ion-icon name="add"></ion-icon>
+          Agregar
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>

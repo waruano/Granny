@@ -10,15 +10,9 @@
 </ion-header>
 
 <ion-content>
-    <ion-list id="sr-list2">
-        <ion-item color="none" id="sr-list-item4">
-          Item 1
-        </ion-item>
-        <ion-item color="none" id="sr-list-item5">
-          Item 2
-        </ion-item>
-        <ion-item color="none" id="sr-list-item6">
-          Item 3
-        </ion-item>
-      </ion-list>
+  <ion-list id="sr-list2">
+    <ion-item color="none" *ngFor="let result of results">
+      {{ result.name }}
+    </ion-item>
+  </ion-list>
 </ion-content>

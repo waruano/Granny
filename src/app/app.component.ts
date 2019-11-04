@@ -1,19 +1,22 @@
-import { Component } from '@angular/core';
+import { Router } from "@angular/router";
+import { Component } from "@angular/core";
 
-import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Platform, AlertController } from "@ionic/angular";
+import { SplashScreen } from "@ionic-native/splash-screen/ngx";
+import { StatusBar } from "@ionic-native/status-bar/ngx";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+  selector: "app-root",
+  templateUrl: "app.component.html",
+  styleUrls: ["app.component.scss"]
 })
 export class AppComponent {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private alert: AlertController,
+    private route: Router
   ) {
     this.initializeApp();
   }
@@ -22,6 +25,33 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      console.log("plataforma lsita");
+      this.platform.backButton.subscribe(() => {
+        console.log(this.route.url);
+        if (this.route.url == "/home" || this.route.url == "/login") {
+          this.alert
+            .create({
+              header: "Salir de la aplicación",
+              message: "¿Está seguro que desea salir de la aplicación?",
+              buttons: [
+                {
+                  text: "Cancelar",
+                  role: "cancel"
+                },
+                {
+                  text: "OK",
+                  handler: () => {
+                    navigator["app"].exitApp();
+                  }
+                }
+              ]
+            })
+            .then(alert => {
+              alert.present();
+            });
+        }
+      });
     });
   }
 }

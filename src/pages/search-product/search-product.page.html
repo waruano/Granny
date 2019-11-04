@@ -10,49 +10,58 @@
 </ion-header>
 
 <ion-content>
-    <form id="buscarProducto-form2">
-        <ion-item id="buscarProducto-input6">
-          <ion-label>
-            Buscar por:
-          </ion-label>
-          <ion-input type="text" placeholder=""></ion-input>
+  <form id="buscarProducto-form2">
+    <ion-item id="buscarProducto-checkbox1">
+      <ion-radio-group [(ngModel)]="search.selected" [ngModelOptions]="{standalone: true}">
+        <ion-list-header>
+          Buscar por:
+        </ion-list-header>
+        <ion-item>
+          <ion-label>Nombre del producto</ion-label>
+          <ion-radio value="1"></ion-radio>
         </ion-item>
-        <ion-item id="buscarProducto-checkbox1">
-          <ion-label>
-            Nombre del producto
-          </ion-label>
-          <ion-checkbox></ion-checkbox>
+        <ion-item>
+          <ion-label>Código de barras</ion-label>
+          <ion-radio value="2"></ion-radio>
         </ion-item>
-        <ion-item id="buscarProducto-checkbox2">
-          <ion-label>
-            Código de barras
-          </ion-label>
-          <ion-checkbox></ion-checkbox>
+        <ion-item>
+          <ion-label>Establecimiento comercial</ion-label>
+          <ion-radio value="3"></ion-radio>
         </ion-item>
-        <ion-item id="buscarProducto-checkbox3">
-          <ion-label>
-            Establecimiento comercial
-          </ion-label>
-          <ion-checkbox></ion-checkbox>
-        </ion-item>
-        <ion-item id="buscarProducto-input7">
-          <ion-label>
-            Ingrese el nombre del producto
-          </ion-label>
-          <ion-input type="text" placeholder=""></ion-input>
-        </ion-item>
-        <button id="buscarProducto-button11" ion-button color="positive" block>
-          Escanear código de barras
-        </button>
-        <ion-item id="buscarProducto-select1">
-          <ion-label>
-            Seleccione su ubicación
-          </ion-label>
-          <ion-select name=""></ion-select>
-        </ion-item>
-      </form>
-      <button id="buscarProducto-button10" ion-button color="positive" block on-click="goToSearchResults()">
-        <ion-icon name="search"></ion-icon>
-        Buscar
-      </button>
+      </ion-radio-group>
+    </ion-item>
+
+
+    <ion-item id="buscarProducto-input7" *ngIf="search.selected == 1">
+      <ion-label position="floating">
+        Ingrese el nombre del producto
+      </ion-label>
+      <ion-input type="text" placeholder="" [(ngModel)]="search.productName" [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="search.selected == 2">
+      <ion-button id="buscarProducto-button11" color="primary" block (click)="scanBarcode()">
+        Escanear código de barras
+      </ion-button>
+    </ion-item>
+    <ion-item *ngIf="search.selected == 2 && search.barcode">
+      <ion-label position="floating">
+        Código de barras
+      </ion-label>
+      <ion-input type="text" placeholder="" [(ngModel)]="search.barcode" name="text" disabled></ion-input>
+    </ion-item>
+    <ion-item id="buscarProducto-select1" *ngIf="search.selected == 3">
+      <place-finder [position]="search.position"></place-finder>
+    </ion-item>
+  </form>
+
+  <ion-grid style="margin-top:30vh">
+    <ion-row>
+      <ion-col style="text-align: center;">
+        <ion-button id="search-product-button9" color="primary" (click)="goToSearchResults()">
+          <ion-icon name="search"></ion-icon>
+          Buscar
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

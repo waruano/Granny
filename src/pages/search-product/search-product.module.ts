@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { SharedModule } from "./../../app/shared.module";
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { IonicModule } from "@ionic/angular";
+import { FormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 
-import { SearchProductPage } from './search-product.page';
+import { SearchProductPage } from "./search-product.page";
 
 @NgModule({
   imports: [
@@ -13,10 +14,11 @@ import { SearchProductPage } from './search-product.page';
     IonicModule,
     RouterModule.forChild([
       {
-        path: '',
+        path: "",
         component: SearchProductPage
       }
-    ])
+    ]),
+    SharedModule
   ],
   declarations: [SearchProductPage]
 })

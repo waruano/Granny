@@ -2,3 +2,22 @@ ion-content {
     --background: url(../../assets/img/wu2sk4ZSzuZdr2FdMwpn_34.jpeg) no-repeat center;
     --background-size: cover;
 }
+
+.central-img {
+    display:block;
+    width:50%;
+    height:auto;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.custom-hr {
+    width: 70vw;
+    height: 0.1vh;
+    background-color: gray;
+}
+
+.custom-border-bottom {
+    border-bottom: 1px solid gray;
+    width: 70vw;
+}

@@ -1,0 +1,11 @@
+<ion-item>
+  <ion-searchbar type="text" placeholder="Ingrese los términos de búsqueda" [(ngModel)]="autocomplete.input"
+    [ngModelOptions]="{standalone: true}" (ionInput)="updateSearchResults()"></ion-searchbar>
+</ion-item>
+<ion-item *ngIf="placeResults">
+  <ion-list>
+    <ion-item *ngFor="let place of placeResults" tappable (click)="selectSearchResult(place)">
+      {{ place.description }}
+    </ion-item>
+  </ion-list>
+</ion-item>
