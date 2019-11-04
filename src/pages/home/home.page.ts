@@ -1,3 +1,4 @@
+import { CustomStorage } from './../../utils/CustomStorage';
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import {
@@ -8,7 +9,7 @@ import {
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
 import { Platform } from "@ionic/angular";
 import { BarcodeScanner } from "@ionic-native/barcode-scanner/ngx";
-import { Subscription } from 'rxjs';
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-home",
@@ -71,13 +72,6 @@ export class HomePage {
   }
 
   goToAddProduct(params) {
-    this.navCtrl.navigateForward("add-product", {
-      queryParams: {
-        barcodeData: {
-          text: "codigo aleatorio"
-        }
-      }
-    });
     this.barcodeScanner
       .scan()
       .then(barcodeData => {
@@ -106,5 +100,34 @@ export class HomePage {
 
   goToSearchProduct(params) {
     this.navCtrl.navigateForward("search-product");
+  }
+
+  logout() {
+    this.alert
+      .create({
+        header: "Cerrar Sesión",
+        message: "¿Está seguro que desea cerrar sesión?",
+        buttons: [
+          {
+            text: "Cancelar",
+            role: "cancel"
+          },
+          {
+            text: "OK",
+            handler: () => {
+              CustomStorage.set("user", "")
+              this.navCtrl.navigateRoot("login");
+              this.google.logout().then(res => {
+                console.log(res);
+              }).catch(err=>{
+                console.log(err);
+              })
+            }
+          }
+        ]
+      })
+      .then(alertInstance => {
+        alertInstance.present();
+      });
   }
 }

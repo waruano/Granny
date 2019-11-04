@@ -1,3 +1,5 @@
+import { CustomStorage } from './../../utils/CustomStorage';
+import { Search } from './../../providers/products/search';
 import { Component } from "@angular/core";
 import {
   LoadingController,
@@ -14,7 +16,7 @@ import { BarcodeScanner } from "@ionic-native/barcode-scanner/ngx";
 export class SearchProductPage {
   loading: any;
   search: {
-    selected: number;
+    selected: string;
     barcode: string;
     productName: string;
     position: { description: string; lat: number; lng: number };
@@ -25,10 +27,11 @@ export class SearchProductPage {
     public navCtrl: NavController,
     public alertCtrl: AlertController,
     public barcodeScanner: BarcodeScanner,
-    public alert: AlertController
+    public alert: AlertController,
+    public searchProvider: Search
   ) {
     this.search = {
-      selected: 0,
+      selected: "",
       barcode: "",
       productName: "",
       position: {
@@ -68,7 +71,13 @@ export class SearchProductPage {
   }
 
   async goToSearchResults() {
-    console.log(this.search);
-    this.navCtrl.navigateForward("search-results");
+    this.searchProvider.search(this.search).then(results=>{
+      CustomStorage.set("results", results);
+      this.navCtrl.navigateForward("search-results", {
+        queryParams: {
+          productName: this.search.productName
+        }
+      });
+    })
   }
 }

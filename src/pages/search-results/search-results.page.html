@@ -4,7 +4,7 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>
-      %Nombre de producto%
+      {{ productName || 'Resultados de la búsqueda' }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -12,7 +12,11 @@
 <ion-content>
   <ion-list id="sr-list2">
     <ion-item color="none" *ngFor="let result of results">
-      {{ result.name }}
+      <ion-label>
+        <h2>{{ result.PluCode.Name }}</h2>
+        <h3>{{ result.Value | currency }}</h3>
+        <p>{{ result.LocationId.Name }}</p>
+      </ion-label>
     </ion-item>
   </ion-list>
 </ion-content>

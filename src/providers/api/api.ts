@@ -6,9 +6,11 @@ import { Injectable } from "@angular/core";
  */
 @Injectable()
 export class Api {
-  url: string = "https://example.com/api/v1";
+  url: string = "http://192.168.0.12:3000"
 
-  constructor(public http: HttpClient) {}
+  constructor(public http: HttpClient) {
+    
+  }
 
   get(endpoint: string, params?: any, reqOpts?: any) {
     if (!reqOpts) {

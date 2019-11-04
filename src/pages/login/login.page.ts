@@ -1,8 +1,11 @@
+import { CustomStorage } from './../../utils/CustomStorage';
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { LoadingController, NavController } from "@ionic/angular";
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
 import { Platform } from "@ionic/angular";
+
+import { User } from './../../providers/user/user';
 
 @Component({
   selector: "app-login",
@@ -10,19 +13,28 @@ import { Platform } from "@ionic/angular";
   styleUrls: ["login.page.scss"]
 })
 export class LoginPage {
-  loading: any;
   constructor(
     private router: Router,
     private platform: Platform,
     private google: GooglePlus,
     public loadingController: LoadingController,
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    public user: User
   ) {}
 
   async ngOnInit() {
-    this.loading = await this.loadingController.create({
+    let loading = await this.loadingController.create({
       message: "Connecting ..."
     });
+    loading.present().then(res=>{
+      let user = CustomStorage.get("user");
+      if (user && user.Name) {
+          loading.dismiss();
+          this.navCtrl.navigateRoot("home")       
+      } else {
+        loading.dismiss();
+      }      
+    })
   }
 
   async presentLoading(loading) {
@@ -30,33 +42,33 @@ export class LoginPage {
   }
 
   async login() {
-    let params;
-    if (this.platform.is("android")) {
-      params = {
-        // 'webClientId': '42424115138-mu5fj5kvpnhi63bmd6e2jkiv9ifirceo.apps.googleusercontent.com',
-        offline: true
-      };
-    } else {
-      params = {};
-    }
+    let params = {
+      'webClientId': '42424115138-3cn8t4rrp3qcppqi1nt96dg0609mq2p7.apps.googleusercontent.com',
+      offline: true
+    };
 
     this.google
       .login(params)
       .then(response => {
-        const { idToken, accessToken } = response;
+        const { idToken } = response;
 
         console.log(response);
-        this.onLoginSuccess(idToken, accessToken);
+
+        this.onLoginSuccess(idToken);
       })
       .catch(error => {
         console.log(error);
         alert("error:" + JSON.stringify(error));
       });
   }
-  onLoginSuccess(accessToken, accessSecret) {
-    console.log(accessToken);
-    
-    this.navCtrl.navigateRoot("home");
+  onLoginSuccess(idToken) {
+    console.log(idToken);
+    this.user.login({idToken: idToken}).then(res => {
+      console.log(res);
+      this.navCtrl.navigateRoot("home");
+    }, err=>{
+      console.log(err)
+    });    
   }
 
   onLoginError(err) {

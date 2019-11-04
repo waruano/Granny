@@ -18,38 +18,38 @@
         </ion-list-header>
         <ion-item>
           <ion-label>Nombre del producto</ion-label>
-          <ion-radio value="1"></ion-radio>
+          <ion-radio value="byName"></ion-radio>
         </ion-item>
         <ion-item>
           <ion-label>Código de barras</ion-label>
-          <ion-radio value="2"></ion-radio>
+          <ion-radio value="byBarcode"></ion-radio>
         </ion-item>
         <ion-item>
           <ion-label>Establecimiento comercial</ion-label>
-          <ion-radio value="3"></ion-radio>
+          <ion-radio value="byLocation"></ion-radio>
         </ion-item>
       </ion-radio-group>
     </ion-item>
 
 
-    <ion-item id="buscarProducto-input7" *ngIf="search.selected == 1">
+    <ion-item id="buscarProducto-input7" *ngIf="search.selected === 'byName'">
       <ion-label position="floating">
         Ingrese el nombre del producto
       </ion-label>
       <ion-input type="text" placeholder="" [(ngModel)]="search.productName" [ngModelOptions]="{standalone: true}"></ion-input>
     </ion-item>
-    <ion-item *ngIf="search.selected == 2">
+    <ion-item *ngIf="search.selected == 'byBarcode'">
       <ion-button id="buscarProducto-button11" color="primary" block (click)="scanBarcode()">
         Escanear código de barras
       </ion-button>
     </ion-item>
-    <ion-item *ngIf="search.selected == 2 && search.barcode">
+    <ion-item *ngIf="search.selected == 'byBarcode' && search.barcode">
       <ion-label position="floating">
         Código de barras
       </ion-label>
       <ion-input type="text" placeholder="" [(ngModel)]="search.barcode" name="text" disabled></ion-input>
     </ion-item>
-    <ion-item id="buscarProducto-select1" *ngIf="search.selected == 3">
+    <ion-item id="buscarProducto-select1" *ngIf="search.selected == 'byLocation'">
       <place-finder [position]="search.position"></place-finder>
     </ion-item>
   </form>
