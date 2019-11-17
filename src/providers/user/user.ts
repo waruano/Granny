@@ -1,78 +1,21 @@
 import { Injectable } from "@angular/core";
 
 import { Api } from "../api/api";
-import { CustomStorage } from "../../utils/CustomStorage";
+import { URLApisEnum, SecurityServicesEnum } from 'src/utils/Enums';
 
-/**
- * Most apps have the concept of a User. This is a simple provider
- * with stubs for login/signup/etc.
- *
- * This User provider makes calls to our API at the `login` and `signup` endpoints.
- *
- * By default, it expects `login` and `signup` to return a JSON object of the shape:
- *
- * ```json
- * {
- *   status: 'success',
- *   user: {
- *     // User fields your app needs, like "id", "name", "email", etc.
- *   }
- * }Ø
- * ```
- *
- * If the `status` field is not `success`, then an error is detected and returned.
- */
 @Injectable()
-export class User {
-  _user: any;
-
-  constructor(public api: Api) {}
-
-  /**
-   * Send a POST request to our login endpoint with the data
-   * the user entered on the form.
-   */
-  login(accountInfo: any) {
-    return this.api
-      .get("login", accountInfo)
-      .toPromise()
-      .then(user => {
-        CustomStorage.set("user", user);
-        this._loggedIn(user);
-      });
+export class UserProvider {
+  constructor(public api:Api) {
+    this.api.url = URLApisEnum.Security;
   }
 
-  /**
-   * Send a POST request to our signup endpoint with the data
-   * the user entered on the form.
-   */
-  signup(accountInfo: any) {
-    let seq = this.api.post("signup", accountInfo).subscribe(
-      (res: any) => {
-        // If the API returned a successful response, mark the user as logged in
-        if (res.status == "success") {
-          this._loggedIn(res);
-        }
-      },
-      err => {
-        console.error("ERROR", err);
-      }
-    );
-
+  login(params: any) {
+    let seq = this.api.post(SecurityServicesEnum.Login, params);
     return seq;
   }
 
-  /**
-   * Log the user out, which forgets the session
-   */
-  logout() {
-    this._user = null;
-  }
-
-  /**
-   * Process a login/signup response to store user data
-   */
-  _loggedIn(resp) {
-    this._user = resp.user;
+  signup(params: any) {
+    let seq = this.api.post(SecurityServicesEnum.Users, params);
+    return seq;
   }
 }

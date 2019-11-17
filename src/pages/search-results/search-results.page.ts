@@ -1,4 +1,3 @@
-import { CustomStorage } from './../../utils/CustomStorage';
 import { Component } from "@angular/core";
 import {
   LoadingController,
@@ -7,6 +6,9 @@ import {
 } from "@ionic/angular";
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { ResultProduct } from './../../models/ResultProduct';
+import { CustomStorage } from './../../utils/CustomStorage';
+
 @Component({
   selector: "app-search-results",
   templateUrl: "search-results.page.html",
@@ -14,7 +16,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class SearchResultsPage {
   loading: any;
-  results: any[];
+  results: ResultProduct[];
   productName: string;
 
   constructor(

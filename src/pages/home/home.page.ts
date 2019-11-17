@@ -1,3 +1,4 @@
+import { StorageKeyEnum } from 'src/utils/Enums';
 import { CustomStorage } from './../../utils/CustomStorage';
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
@@ -18,6 +19,7 @@ import { Subscription } from "rxjs";
 })
 export class HomePage {
   loading: any;
+  data: any;
 
   constructor(
     private router: Router,
@@ -27,7 +29,11 @@ export class HomePage {
     public navCtrl: NavController,
     public barcodeScanner: BarcodeScanner,
     public alert: AlertController
-  ) {}
+  ) {
+    this.data = {
+      name: ""
+    }
+  }
 
   async ngOnInit() {
     this.loading = await this.loadingController.create({
@@ -115,7 +121,8 @@ export class HomePage {
           {
             text: "OK",
             handler: () => {
-              CustomStorage.set("user", "")
+              CustomStorage.set(StorageKeyEnum.Token, "")
+              CustomStorage.set(StorageKeyEnum.AuthToken, "")
               this.navCtrl.navigateRoot("login");
               this.google.logout().then(res => {
                 console.log(res);

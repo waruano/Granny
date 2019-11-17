@@ -1,11 +1,12 @@
 import { CustomStorage } from './../../utils/CustomStorage';
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
-import { LoadingController, NavController } from "@ionic/angular";
+import { LoadingController, NavController, AlertController } from "@ionic/angular";
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
 import { Platform } from "@ionic/angular";
 
-import { User } from './../../providers/user/user';
+import { UserProvider } from './../../providers/user/user';
+import { StorageKeyEnum } from 'src/utils/Enums';
 
 @Component({
   selector: "app-login",
@@ -16,23 +17,41 @@ export class LoginPage {
   constructor(
     private router: Router,
     private platform: Platform,
+    public alertCtrl: AlertController,
     private google: GooglePlus,
     public loadingController: LoadingController,
     public navCtrl: NavController,
-    public user: User
+    public userProvider: UserProvider
   ) {}
 
   async ngOnInit() {
+    this.validateUser();
+  }
+
+  async validateUser(){
     let loading = await this.loadingController.create({
       message: "Connecting ..."
     });
     loading.present().then(res=>{
-      let user = CustomStorage.get("user");
-      if (user && user.Name) {
+      let token = CustomStorage.get(StorageKeyEnum.Token);
+      if (token && token != "") {
           loading.dismiss();
-          this.navCtrl.navigateRoot("home")       
+          this.userProvider.login({googleToken: token}).subscribe(
+            (response: any) => {
+              console.log(response);
+              if ( typeof response.token != "undefined" && response.token != "") {
+                CustomStorage.set(StorageKeyEnum.AuthToken,response.token);
+                this.navCtrl.navigateRoot("home");
+              }else{
+                this.onLoginError(response);
+              }
+            },
+            error => {
+              this.onLoginError(error);
+            }
+          );      
       } else {
-        loading.dismiss();
+        loading.dismiss(); 
       }      
     })
   }
@@ -51,27 +70,48 @@ export class LoginPage {
       .login(params)
       .then(response => {
         const { idToken } = response;
-
         console.log(response);
-
         this.onLoginSuccess(idToken);
       })
       .catch(error => {
         console.log(error);
-        alert("error:" + JSON.stringify(error));
       });
   }
   onLoginSuccess(idToken) {
     console.log(idToken);
-    this.user.login({idToken: idToken}).then(res => {
-      console.log(res);
-      this.navCtrl.navigateRoot("home");
-    }, err=>{
-      console.log(err)
-    });    
+    this.userProvider.signup({googleToken: idToken}).subscribe(
+      (res: any) => {
+        console.log(res);   
+        CustomStorage.set(StorageKeyEnum.Token,idToken);       
+        this.validateUser();
+      },
+      error => {
+        if(error.status == 409 || error.status == 200){
+          CustomStorage.set(StorageKeyEnum.Token,idToken);  
+          this.validateUser();
+        }else{
+          this.onLoginError(error);
+        }
+      }
+    );  
   }
 
-  onLoginError(err) {
-    console.log(err);
+  onLoginError(error) {
+    console.log('Error',error);
+    this.alertCtrl
+      .create({
+        message: "En este momento presentamos algunos problemas, intentalo de nuevo mas tarde",
+        buttons: [
+          {
+            text: "OK",
+            handler: () => {
+              this.login();
+            }
+          }
+        ]
+      })
+      .then(res => {
+        res.present();
+      });
   }
 }

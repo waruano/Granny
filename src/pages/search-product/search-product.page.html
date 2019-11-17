@@ -4,18 +4,19 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>
-      Buscar Producto
+      Búsqueda
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <form id="buscarProducto-form2">
-    <ion-item id="buscarProducto-checkbox1">
-      <ion-radio-group [(ngModel)]="search.selected" [ngModelOptions]="{standalone: true}">
-        <ion-list-header>
-          Buscar por:
-        </ion-list-header>
+    <ion-card id="buscarProducto-checkbox1">
+        <ion-card-header>
+            <ion-card-title>Opciones de búsqueda:</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+      <ion-radio-group [(ngModel)]="search.selected" [ngModelOptions]="{standalone: true}">        
         <ion-item>
           <ion-label>Nombre del producto</ion-label>
           <ion-radio value="byName"></ion-radio>
@@ -29,9 +30,14 @@
           <ion-radio value="byLocation"></ion-radio>
         </ion-item>
       </ion-radio-group>
-    </ion-item>
+    </ion-card-content>
+    </ion-card>
 
-
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>Criterio de búsqueda</ion-card-title>
+        </ion-card-header>
+        
     <ion-item id="buscarProducto-input7" *ngIf="search.selected === 'byName'">
       <ion-label position="floating">
         Ingrese el nombre del producto
@@ -52,6 +58,7 @@
     <ion-item id="buscarProducto-select1" *ngIf="search.selected == 'byLocation'">
       <place-finder [position]="search.position"></place-finder>
     </ion-item>
+  </ion-card>
   </form>
 
   <ion-grid style="margin-top:30vh">

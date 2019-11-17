@@ -1,5 +1,6 @@
+import { Environment } from './../../utils/Enums';
+import { SearchProvider } from './../../providers/products/search';
 import { CustomStorage } from './../../utils/CustomStorage';
-import { Search } from './../../providers/products/search';
 import { Component } from "@angular/core";
 import {
   LoadingController,
@@ -28,14 +29,14 @@ export class SearchProductPage {
     public alertCtrl: AlertController,
     public barcodeScanner: BarcodeScanner,
     public alert: AlertController,
-    public searchProvider: Search
+    public searchProvider: SearchProvider
   ) {
     this.search = {
       selected: "",
-      barcode: "",
+      barcode: Environment.env == "dev" ? "12345": "",
       productName: "",
       position: {
-        description: "",
+        description: Environment.env == "dev" ? "Éxito Laureles, Carrera 81, Medellín, Antioquia, Colombia": "",
         lat: 0,
         lng: 0
       }
