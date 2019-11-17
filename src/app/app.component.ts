@@ -25,10 +25,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-
-      console.log("plataforma lsita");
       this.platform.backButton.subscribe(() => {
-        console.log(this.route.url);
         if (this.route.url == "/home" || this.route.url == "/login") {
           this.alert
             .create({

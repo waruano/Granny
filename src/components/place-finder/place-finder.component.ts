@@ -52,12 +52,11 @@ export class PlaceFinderComponent implements OnInit {
     this.zone.run(() => {
       this.autocomplete.input = place.description;
     });
-    console.log(place);
     this.geocoder.geocode({ placeId: place.place_id }, (results, status) => {
       if (status == "OK" && results[0]) {
         this.position.description = place.description;
        if (this.position.description && this.position.description.length > 0) {
-        this.position.description = this.position.description.split("Colombia")[0];
+        this.position.description = this.position.description;
        } 
         this.position.lat = results[0].geometry.location.lat();
         this.position.lng = results[0].geometry.location.lng();

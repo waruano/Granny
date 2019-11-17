@@ -1,3 +1,4 @@
+import { Environment } from './../../utils/Enums';
 import { CustomStorage } from './../../utils/CustomStorage';
 import { StorageKeyEnum } from 'src/utils/Enums';
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
@@ -10,15 +11,11 @@ import { Injectable } from "@angular/core";
 export class Api {
   public url: string;
 
-  constructor(public http: HttpClient) {
-    
-  }
+  constructor(public http: HttpClient) {}
 
   get(endpoint: string) {
     let token = CustomStorage.get(StorageKeyEnum.AuthToken);
-    
-    token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndpbGxpYW1ydWFub0B1bmljYXVjYS5lZHUuY28iLCJ1bmlxdWVfbmFtZSI6IjVkY2UzYjdiN2U3MmJlMDAwMTc1YTJlOCIsIm5iZiI6MTU3Mzg4NjU3NCwiZXhwIjoxNTc0NDkxMzc0LCJpYXQiOjE1NzM4ODY1NzR9.LZjcJGB_noDRSi3LdoPw99kj7-y3BEjrfHkWuHwjj8M'
-        
+       
     let reqOpts = {headers:{
       'Authorization':'Bearer '+token,
       'Content-Type': 'application/json',

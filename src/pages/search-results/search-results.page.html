@@ -4,17 +4,17 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>
-      {{ productName || 'Resultados de la búsqueda' }}
+      {{ searchLabel || 'Resultados de la búsqueda' }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list id="sr-list2">
-    <ion-item color="none" *ngFor="let result of results">
+    <ion-item *ngFor="let result of results">
       <ion-label>
-        <h2>{{ result.productName }}</h2>
-        <h3>{{ result.value | currency }}</h3>
+        <h3>{{ result.productName }}</h3>
+        <p>{{ result.value | currency }}</p>
         <p>{{ result.locationName }}</p>
       </ion-label>
     </ion-item>

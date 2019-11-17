@@ -29,7 +29,6 @@ export class AddProductPage {
   ) {
     this.route.queryParams.subscribe(params => {
       this.barcodeData = params.barcodeData;
-      console.log(this.barcodeData);
     });
     this.position = {
       description: "",
@@ -54,18 +53,19 @@ export class AddProductPage {
     Number.parseInt(this.barcodeData.text.toString()),
     this.product.name,
     Number.parseFloat(this.product.price),
-    this.position.description);
-    console.log(oProduct);    
-
-    this.productProvider.save(oProduct).subscribe(
-      (response: any) => {
-        console.log(response);
-        this.showSuccessMessage();
-      },
-      error => {
-        this.showErrorMessage("Error al guardar el  producto: "+error);
-      }
-    ); 
+    this.position.description);    
+    this.loading.present().then(res => {
+      this.productProvider.save(oProduct).subscribe(
+        (response: any) => {
+          this.loading.dismiss();
+          this.showSuccessMessage();
+        },
+        error => {
+          this.loading.dismiss();
+          this.showErrorMessage("Error al guardar el  producto: "+error);
+        }
+      ); 
+    });
   }
 
   validateForm(){

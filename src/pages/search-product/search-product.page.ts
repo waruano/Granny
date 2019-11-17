@@ -22,7 +22,6 @@ export class SearchProductPage {
     productName: string;
     position: { description: string; lat: number; lng: number };
   };
-
   constructor(
     public loadingController: LoadingController,
     public navCtrl: NavController,
@@ -31,22 +30,27 @@ export class SearchProductPage {
     public alert: AlertController,
     public searchProvider: SearchProvider
   ) {
-    this.search = {
-      selected: "",
-      barcode: Environment.env == "dev" ? "12345": "",
-      productName: "",
-      position: {
-        description: Environment.env == "dev" ? "Éxito Laureles, Carrera 81, Medellín, Antioquia, Colombia": "",
-        lat: 0,
-        lng: 0
-      }
-    };
+    this.initResult();
   }
 
   async ngOnInit() {
     this.loading = await this.loadingController.create({
       message: "Connecting ..."
     });
+    this.initResult();
+  }
+
+  initResult(){
+    this.search = {
+      selected: "",
+      barcode: "",
+      productName: "",
+      position: {
+        description: "",
+        lat: 0,
+        lng: 0
+      }
+    };
   }
 
   scanBarcode() {
@@ -72,13 +76,56 @@ export class SearchProductPage {
   }
 
   async goToSearchResults() {
-    this.searchProvider.search(this.search).then(results=>{
-      CustomStorage.set("results", results);
-      this.navCtrl.navigateForward("search-results", {
-        queryParams: {
-          productName: this.search.productName
-        }
+
+    this.loading.present().then(res => {
+      this.searchProvider.search(this.search).then(results => {
+        this.loading.dismiss();
+        if( typeof results.length != 'undefined' && results.length > 0){
+          CustomStorage.set("results", results);
+          let searchLabel = this.createSearchLabel();
+          this.navCtrl.navigateForward("search-results", {
+            queryParams: {
+              searchLabel: searchLabel
+            }
+          });
+        }else{
+          this.showMessage("No se encontraror resultados");
+        }      
       });
-    })
+    });
+  }
+
+  showMessage(message:string) {
+    this.alertCtrl
+      .create({
+        message: message,
+        buttons: [
+          {
+            text: "OK",
+            handler: () => {
+              this.alertCtrl.dismiss();
+            }
+          }
+        ]
+      })
+      .then(res => {
+        res.present();
+      });
+  }
+
+  createSearchLabel(){
+    var searchLabel = "";
+    switch(this.search.selected){
+      case 'byName':
+        searchLabel = this.search.productName;
+        break;
+      case 'byBarcode':
+        searchLabel = this.search.barcode;
+        break;
+      case 'byLocation':
+        searchLabel = this.search.position.description;
+        break;
+    }
+    return searchLabel;
   }
 }

@@ -20,42 +20,34 @@ export class SearchProvider {
 
   byName(options: any) {
     let endpoint =
-      SearchServicesEnum.ByName +
-      "?nameProduct=" +
-      encodeURI(options.productName);
-    console.log(endpoint);
-    if (Environment.env == "dev") {
-      endpoint = SearchServicesEnum.ByName;
-    }
+      SearchServicesEnum.ByName +"/" + encodeURIComponent(options.productName);
     return this.api
       .get(endpoint)
       .toPromise()
       .then(searchResult => {
         return searchResult;
+      }).catch(error =>{
+        console.log(error);
+        return [];
       });
   }
 
   byBarcode(options: any) {
     let endpoint = SearchServicesEnum.ByCode + "/" + options.barcode;
-    if (Environment.env == "dev") {
-      endpoint = SearchServicesEnum.ByCode;
-    }
     return this.api
       .get(endpoint)
       .toPromise()
       .then(searchResult => {
         return [searchResult];
+      }).catch(error =>{
+        console.log(error);
+        return [];
       });
   }
 
   byLocation(options: any) {
     let endpoint =
-      SearchServicesEnum.ByLocation +
-      "/" +
-      encodeURI(options.position.description);
-    if (Environment.env == "dev") {
-      endpoint = SearchServicesEnum.ByLocation;
-    }
+      SearchServicesEnum.ByLocation +"/" + encodeURIComponent(options.position.description);
     return this.api
       .get(endpoint)
       .toPromise()

@@ -17,7 +17,7 @@ import { CustomStorage } from './../../utils/CustomStorage';
 export class SearchResultsPage {
   loading: any;
   results: ResultProduct[];
-  productName: string;
+  searchLabel: string;
 
   constructor(
     public loadingController: LoadingController,
@@ -28,7 +28,7 @@ export class SearchResultsPage {
   ) {
     this.results = [];
     this.route.queryParams.subscribe(params => {
-      this.productName = params.productName;
+      this.searchLabel = params.searchLabel;
     });
   }
 
@@ -38,4 +38,5 @@ export class SearchResultsPage {
     });
     this.results = CustomStorage.get("results");
   }
+
 }

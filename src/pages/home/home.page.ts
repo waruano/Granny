@@ -1,5 +1,5 @@
-import { StorageKeyEnum } from 'src/utils/Enums';
-import { CustomStorage } from './../../utils/CustomStorage';
+import { StorageKeyEnum } from "src/utils/Enums";
+import { CustomStorage } from "./../../utils/CustomStorage";
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import {
@@ -31,8 +31,8 @@ export class HomePage {
     public alert: AlertController
   ) {
     this.data = {
-      name: ""
-    }
+      name: CustomStorage.get(StorageKeyEnum.Name)
+    };
   }
 
   async ngOnInit() {
@@ -43,38 +43,6 @@ export class HomePage {
 
   async presentLoading(loading) {
     await loading.present();
-  }
-
-  async login() {
-    let params;
-    if (this.platform.is("android")) {
-      params = {
-        // 'webClientId': '42424115138-mu5fj5kvpnhi63bmd6e2jkiv9ifirceo.apps.googleusercontent.com',
-        offline: true
-      };
-    } else {
-      params = {};
-    }
-    this.google
-      .login(params)
-      .then(response => {
-        const { idToken, accessToken } = response;
-
-        console.log(response);
-        this.onLoginSuccess(idToken, accessToken);
-        alert("error:" + idToken + accessToken);
-      })
-      .catch(error => {
-        console.log(error);
-        alert("error:" + JSON.stringify(error));
-      });
-  }
-  onLoginSuccess(accessToken, accessSecret) {
-    console.log(accessToken);
-  }
-
-  onLoginError(err) {
-    console.log(err);
   }
 
   goToAddProduct(params) {
@@ -121,14 +89,18 @@ export class HomePage {
           {
             text: "OK",
             handler: () => {
-              CustomStorage.set(StorageKeyEnum.Token, "")
-              CustomStorage.set(StorageKeyEnum.AuthToken, "")
+              CustomStorage.set(StorageKeyEnum.Token, "");
+              CustomStorage.set(StorageKeyEnum.AuthToken, "");
+              CustomStorage.set(StorageKeyEnum.Name, "");
               this.navCtrl.navigateRoot("login");
-              this.google.logout().then(res => {
-                console.log(res);
-              }).catch(err=>{
-                console.log(err);
-              })
+              this.google
+                .logout()
+                .then(res => {
+                  console.log(res);
+                })
+                .catch(err => {
+                  console.log(err);
+                });
             }
           }
         ]

@@ -1,8 +1,8 @@
 export  enum URLApisEnum{
     Security = 'https://grannyapisecurity.azurewebsites.net/api/v1',
     Product = 'https://grannyapiregister.azurewebsites.net/api/v1/',
-    //Search = 'https://grannyapiquery.azurewebsites.net/api/v1/'
-    Search = 'http://localhost:3000'
+    Search = 'https://grannyapiquery.azurewebsites.net/api/v1/'
+    //Search = 'http://localhost:3000'
 }
 
 export enum SecurityServicesEnum{
@@ -15,14 +15,15 @@ export enum ProductServicesEnum{
 }
 
 export enum SearchServicesEnum{
-    ByName = 'Product',
+    ByName = 'Product/Get',
     ByCode = 'BestPrice/GetByCode',
     ByLocation = 'BestPrice/GetByLocation'
 }
 
 export enum StorageKeyEnum{
     Token = 'token',
-    AuthToken = 'authToken'
+    AuthToken = 'authToken',
+    Name = 'name'
 }
 
 export enum Environment {
